@@ -10,7 +10,12 @@ import java.util.GregorianCalendar;
  *
  */
 public class Controller {
+
 	public static AppointmentBook appBook = new AppointmentBook();
+	public static ArrayList<Appointment> getAllAppointments(){
+		return appBook.getAllAppointments();
+	}
+
 	public static void main(String[] args){
 		BasicForm.createAndShowGUI();
 		
@@ -30,12 +35,11 @@ public class Controller {
 
 	public static void addAppointment(Appointment appointment){
 		appBook.add(appointment);
-		appBook.ShowAllAppointments();
+		appBook.showAllAppointments();
 	}
 
 	public static void removeAppointment(int index){
 		ArrayList<Appointment> appointments = appBook.getAllAppointments();
-
 		appointments.remove(index);
 	}
 

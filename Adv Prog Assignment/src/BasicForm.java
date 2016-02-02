@@ -3,6 +3,8 @@ import java.awt.event.ActionListener;
 import java.lang.reflect.Array;
 import java.text.DateFormat;
 import java.text.SimpleDateFormat;
+import java.util.ArrayList;
+import java.util.Calendar;
 import java.util.GregorianCalendar;
 
 import javax.swing.*;
@@ -105,7 +107,6 @@ public class BasicForm{
 		addButton.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
 				//needs to know what is being added
-
 				int year = Integer.parseInt(yearTextField.getText());
 				int month = Integer.parseInt(monthTextField.getText()) - 1;
 				int day = Integer.parseInt(dayTextField.getText());
@@ -119,6 +120,7 @@ public class BasicForm{
 				GregorianCalendar endDate = new GregorianCalendar(year, month, day, endTimeHrs, endTimeMin);
 
 				Appointment appointment = new Appointment(startDate, endDate, titleText.getText());
+				errorCheckAppointment(appointment);
 				Controller.addAppointment(appointment);
 				//update list model from appBook
 				updateJList();
@@ -142,7 +144,7 @@ public class BasicForm{
 		panel.add(showAllButton);
 		showAllButton.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
-				AppointmentBook.ShowAllAppointments();
+				updateJList();
 			}
 		});
 	}
@@ -152,5 +154,44 @@ public class BasicForm{
 		for(Appointment apt : Controller.appBook.getAllAppointments()){
 			listModel.addElement(apt.toString());
 		}
+	}
+
+	public static void errorCheckAppointment(Appointment newAppointment){
+
+		GregorianCalendar newAppointmentClone = (GregorianCalendar)newAppointment.getStartDateTime().clone();
+		GregorianCalendar oldAppointClone;
+
+		ArrayList<Appointment> appointments = Controller.getAllAppointments();
+
+		ArrayList<Appointment> dateAppointment = new ArrayList<Appointment>();
+
+		newAppointmentClone.clear(Calendar.MILLISECOND);
+		newAppointmentClone.clear(Calendar.SECOND);
+		newAppointmentClone.clear(Calendar.MINUTE);
+		newAppointmentClone.clear(Calendar.HOUR_OF_DAY);
+
+		for(Appointment appointment : appointments){
+			oldAppointClone = (GregorianCalendar) appointment.getStartDateTime().clone();
+			oldAppointClone.clear(Calendar.MILLISECOND);
+			oldAppointClone.clear(Calendar.SECOND);
+			oldAppointClone.clear(Calendar.MINUTE);
+			oldAppointClone.clear(Calendar.HOUR_OF_DAY);
+
+			if(newAppointmentClone.equals(oldAppointClone)){
+				dateAppointment.add(appointment);
+			}
+		}
+
+		for(Appointment appointment : dateAppointment){
+			
+		}
+
+
+//		if newStart == start {Error};
+//		if newEnd == end{Error};
+//
+//		if newStart > start && < end {Error};
+//		if newStart < start && newend > start {Error}
+//		if newStart > start && newEnd > End && newStart < end {Error};
 	}
 }
