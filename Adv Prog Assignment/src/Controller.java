@@ -1,3 +1,4 @@
+import java.util.ArrayList;
 import java.util.GregorianCalendar;
 
 
@@ -33,7 +34,9 @@ public class Controller {
 	}
 
 	public static void removeAppointment(int index){
-		appBook.getAllAppointments().remove(index);
+		ArrayList<Appointment> appointments = appBook.getAllAppointments();
+
+		appointments.remove(index);
 	}
 
-}
+	}

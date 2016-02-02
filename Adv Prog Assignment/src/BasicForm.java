@@ -98,7 +98,7 @@ public class BasicForm{
 			System.out.println(dataList.getModel().getElementAt(i));
 		}
 
-		//Add Remove and Show Buttons
+		//Add Remove and Show Buttons / actions
 		JButton addButton = new JButton("Add Appointment");
 		addButton.setBounds(10, 80, 160, 25);
 		panel.add(addButton);
@@ -120,12 +120,8 @@ public class BasicForm{
 
 				Appointment appointment = new Appointment(startDate, endDate, titleText.getText());
 				Controller.addAppointment(appointment);
-				//acts as a refresh
-				listModel.removeAllElements();
 				//update list model from appBook
-				for(Appointment apt : Controller.appBook.getAllAppointments()){
-					listModel.addElement(apt.toString());
-				}
+				updateJList();
 			}
 		});
 
@@ -136,10 +132,10 @@ public class BasicForm{
 			public void actionPerformed(ActionEvent e) {
 				//needs to know what to remove
 				Controller.removeAppointment(dataList.getSelectedIndex());
-				listModel.removeAllElements();
-
+				updateJList();
 			}
 		});
+
 		
 		JButton showAllButton = new JButton("Show Appointments");
 		showAllButton.setBounds(350, 80, 160, 25);
@@ -147,13 +143,14 @@ public class BasicForm{
 		showAllButton.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
 				AppointmentBook.ShowAllAppointments();
-
-
 			}
 		});
-		
-		
-		//appointments set not working
-		
+	}
+
+	private static void updateJList(){
+		listModel.removeAllElements();
+		for(Appointment apt : Controller.appBook.getAllAppointments()){
+			listModel.addElement(apt.toString());
+		}
 	}
 }

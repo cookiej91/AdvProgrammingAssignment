@@ -29,8 +29,7 @@ public class AppointmentBook {
 	 * @return
 	 */
 	public ArrayList<Appointment> getAllAppointments(){
-		ArrayList<Appointment> all = new ArrayList<Appointment>(appointmentList);
-		return all;
+		return appointmentList;
 	}
 	
 	/**
