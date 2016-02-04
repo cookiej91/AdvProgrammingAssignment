@@ -3,14 +3,19 @@ import java.util.GregorianCalendar;
 
 
 /**
- * Class javadoc comment
  * 
  *  The controller class will test the Appointment and AppointmentBook classes
  * @author 13141188
  *
  */
 public class Controller {
+
+	//global variables
 	public static AppointmentBook appBook = new AppointmentBook();
+	public static ArrayList<Appointment> getAllAppointments(){
+		return appBook.getAllAppointments();
+	}
+
 	public static void main(String[] args){
 		BasicForm.createAndShowGUI();
 		
@@ -28,14 +33,21 @@ public class Controller {
 		System.out.println("Find test: " + appBook.isInBook(a2));
 	}
 
+	/**
+	 * adding the appointment
+	 * @param appointment
+	 */
 	public static void addAppointment(Appointment appointment){
 		appBook.add(appointment);
-		appBook.ShowAllAppointments();
+		appBook.showAllAppointments();
 	}
 
+	/**
+	 * removing at index (on selection from JList)
+	 * @param index
+	 */
 	public static void removeAppointment(int index){
 		ArrayList<Appointment> appointments = appBook.getAllAppointments();
-
 		appointments.remove(index);
 	}
 

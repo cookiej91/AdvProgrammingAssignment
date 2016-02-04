@@ -35,7 +35,7 @@ public class AppointmentBook {
 	/**
 	 * Print out all appointments in arrayList
 	 */
-	public static void ShowAllAppointments(){
+	public void showAllAppointments(){
 		ArrayList<Appointment> all = new ArrayList<Appointment>(appointmentList);
 		System.out.println();
 		System.out.println("All Appointments");
@@ -45,8 +45,6 @@ public class AppointmentBook {
 			System.out.println();
 		}
 	}
-	
-	// We need a method to find the location of a particular appointment
 	
 	/**
 	 * Note returns -1 if no appointment found
@@ -74,8 +72,6 @@ public class AppointmentBook {
 			throw new IllegalArgumentException("Appointment not found");
 		
 	}
-	
-	//need a method to determine if an appointment is in the book
 	
 	/**
 	 * find specific appointment using variable named stored in ArrayList

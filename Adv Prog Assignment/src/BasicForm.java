@@ -1,8 +1,9 @@
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
-import java.lang.reflect.Array;
 import java.text.DateFormat;
 import java.text.SimpleDateFormat;
+import java.util.ArrayList;
+import java.util.Calendar;
 import java.util.GregorianCalendar;
 
 import javax.swing.*;
@@ -13,8 +14,8 @@ import javax.swing.*;
  *
  */
 public class BasicForm{
-	private static DefaultListModel listModel = new DefaultListModel();
-	private static JList<String> dataList = new JList(listModel);
+	private static DefaultListModel<String> listModel = new DefaultListModel<String>();
+	private static JList<String> dataList = new JList<String>(listModel);
 
 	protected static void createAndShowGUI(){
 		JFrame frame = new JFrame("Appointment Book");
@@ -33,7 +34,7 @@ public class BasicForm{
  */
 	public static void placeComponents(JPanel panel) {
 
-		panel.setLayout(null);
+		panel.setLayout(null);		
 		
 		//date label and text field
 		JLabel dateLabel = new JLabel("Date");
@@ -87,12 +88,12 @@ public class BasicForm{
 		final JTextField titleText = new JTextField(20);
 		titleText.setBounds(50, 40, 170, 25);
 		panel.add(titleText);
-
-		//Array
-
+		
 		final JList<String> dataList = new JList(listModel);
-		dataList.setBounds(10,200,500,100);
-		panel.add(dataList);
+		JScrollPane pane = new JScrollPane(dataList);
+		pane.setBounds(10,200,500,100);
+		panel.add(pane);
+		
 
 		for (int i = 0; i < dataList.getModel().getSize(); i++){
 			System.out.println(dataList.getModel().getElementAt(i));
@@ -104,8 +105,7 @@ public class BasicForm{
 		panel.add(addButton);
 		addButton.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
-				//needs to know what is being added
-
+				//once input -1 off month according to gregorianCalendar
 				int year = Integer.parseInt(yearTextField.getText());
 				int month = Integer.parseInt(monthTextField.getText()) - 1;
 				int day = Integer.parseInt(dayTextField.getText());
@@ -119,6 +119,7 @@ public class BasicForm{
 				GregorianCalendar endDate = new GregorianCalendar(year, month, day, endTimeHrs, endTimeMin);
 
 				Appointment appointment = new Appointment(startDate, endDate, titleText.getText());
+				errorCheckAppointment(appointment);
 				Controller.addAppointment(appointment);
 				//update list model from appBook
 				updateJList();
@@ -142,15 +143,73 @@ public class BasicForm{
 		panel.add(showAllButton);
 		showAllButton.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
-				AppointmentBook.ShowAllAppointments();
+				updateJList();
 			}
 		});
 	}
 
+	/**
+	 * refreshes list, removes all appointments from JList
+	 * reads them with the new addition to the arrayList
+	 */
 	private static void updateJList(){
 		listModel.removeAllElements();
 		for(Appointment apt : Controller.appBook.getAllAppointments()){
 			listModel.addElement(apt.toString());
 		}
+	}
+
+	/**
+	 * error conflict checking
+	 * creating clones to remove times from dates to just compare dates
+	 * put all appointments with same date into array and then compare only the same day appointments
+	 * to check for dateTime conflicts
+	 * @param newAppointment
+	 */
+	public static void errorCheckAppointment(Appointment newAppointment){
+
+		GregorianCalendar newAppointmentClone = (GregorianCalendar)newAppointment.getStartDateTime().clone();
+		GregorianCalendar oldAppointClone;
+
+		ArrayList<Appointment> appointments = Controller.getAllAppointments();
+
+		ArrayList<Appointment> dateAppointment = new ArrayList<Appointment>();
+
+		newAppointmentClone.clear(Calendar.MILLISECOND);
+		newAppointmentClone.clear(Calendar.SECOND);
+		newAppointmentClone.clear(Calendar.MINUTE);
+		newAppointmentClone.clear(Calendar.HOUR_OF_DAY);
+		
+		//checking for dates that are the same as the newappointment
+		for(Appointment appointment : appointments){
+			oldAppointClone = (GregorianCalendar) appointment.getStartDateTime().clone();
+			oldAppointClone.clear(Calendar.MILLISECOND);
+			oldAppointClone.clear(Calendar.SECOND);
+			oldAppointClone.clear(Calendar.MINUTE);
+			oldAppointClone.clear(Calendar.HOUR_OF_DAY);
+
+			if(newAppointmentClone.equals(oldAppointClone)){
+				dateAppointment.add(appointment);
+			}
+		}
+		
+		//checking against times
+/*		for(Appointment appointment : dateAppointment){
+			if(newAppointment.getStartDateTime() == appointment.getStartDateTime()){
+				System.out.println("Error Conflict");
+			} else if (newAppointment.getEndDateTime() == appointment.getEndDateTime()){
+				System.out.println("Error Conflict");
+			} else if (newAppointment.getStartDateTime() > appointment.getStartDateTime() && newAppointment.getStartDateTime() < appointment.getEndDateTime()){
+				System.out.println("Error Conflict");
+			}
+		}*/
+
+
+//		if newStart == start {Error};
+//		if newEnd == end{Error};
+//
+//		if newStart > start && < end {Error};
+//		if newStart < start && newend > start {Error}
+//		if newStart > start && newEnd > End && newStart < end {Error};
 	}
 }
