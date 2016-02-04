@@ -1,5 +1,8 @@
+import com.sun.xml.internal.ws.policy.privateutil.PolicyUtils;
+
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.io.IOException;
 import java.text.DateFormat;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
@@ -21,6 +24,40 @@ public class BasicForm{
 		JFrame frame = new JFrame("Appointment Book");
 		frame.setSize(600,500);
 		frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+
+		//MenuBar (Top Toolbar)
+		JMenuBar menuBar = new JMenuBar();
+		frame.setJMenuBar(menuBar);
+
+		JMenu file = new JMenu("File");
+		menuBar.add(file);
+		//Menu Items for File
+		JMenuItem importFile = new JMenuItem("Import");
+		JMenuItem exportFile = new JMenuItem("Export");
+		JMenuItem exit = new JMenuItem("Exit");
+
+		//adding file menuItems and actionListeners
+		file.add(importFile);
+		class importAction implements ActionListener{
+			public void actionPerformed(ActionEvent e){
+
+			}
+		}
+		file.add(exportFile);
+		//exit button add/action
+		file.add(exit);
+		class exitAction implements ActionListener{
+			public void actionPerformed(ActionEvent e){
+				System.exit(0);
+			}
+		}
+		exit.addActionListener(new exitAction());
+
+		JMenu help = new JMenu("Help");
+		menuBar.add(help);
+		//Menu Items for help
+		JMenuItem about = new JMenuItem("About");
+		help.add(about);
 
 		JPanel panel = new JPanel();
 		frame.add(panel);
@@ -91,7 +128,7 @@ public class BasicForm{
 		
 		final JList<String> dataList = new JList(listModel);
 		JScrollPane pane = new JScrollPane(dataList);
-		pane.setBounds(10,200,500,100);
+		pane.setBounds(10,150,500,100);
 		panel.add(pane);
 		
 
@@ -147,6 +184,9 @@ public class BasicForm{
 		showAllButton.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
 				updateJList();
+				Export.exportToText();
+				Export.exportToICS();
+				Export.exportToCSV();
 			}
 		});
 	}
