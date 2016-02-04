@@ -130,6 +130,35 @@ public class BasicForm{
 		JScrollPane pane = new JScrollPane(dataList);
 		pane.setBounds(10,150,500,100);
 		panel.add(pane);
+
+		//cycle list (prev / next)
+		/**
+		 * 
+		 */
+		final JList<String> singleList = new JList(listModel);
+		singleList.setBounds(10,300,500,25);
+		panel.add(singleList);
+
+		JButton prevAppointment = new JButton("Prev");
+		prevAppointment.setBounds(10, 330, 60, 25);
+		panel.add(prevAppointment);
+		prevAppointment.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
+
+			}
+		});
+
+		JButton nextAppointment = new JButton("Next");
+		nextAppointment.setBounds(450, 330, 60, 25);
+		panel.add(nextAppointment);
+		nextAppointment.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
+
+				for(int i = 0; i < Controller.appBook.getAllAppointments().size(); i++){
+
+				}
+			}
+		});
 		
 
 		for (int i = 0; i < dataList.getModel().getSize(); i++){
@@ -177,16 +206,12 @@ public class BasicForm{
 			}
 		});
 
-		
 		JButton showAllButton = new JButton("Show Appointments");
 		showAllButton.setBounds(350, 80, 160, 25);
 		panel.add(showAllButton);
 		showAllButton.addActionListener(new ActionListener() {
-			public void actionPerformed(ActionEvent e) {
+			public void actionPerformed(ActionEvent e){
 				updateJList();
-				Export.exportToText();
-				Export.exportToICS();
-				Export.exportToCSV();
 			}
 		});
 
@@ -210,7 +235,6 @@ public class BasicForm{
 				}
 			}
 		});
-
 	}
 
 	/**
