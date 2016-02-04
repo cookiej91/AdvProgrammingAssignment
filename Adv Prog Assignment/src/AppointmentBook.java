@@ -35,11 +35,8 @@ public class AppointmentBook {
 	/**
 	 * Print out all appointments in arrayList
 	 */
-<<<<<<< HEAD
+
 	public void showAllAppointments(){
-=======
-	public static void showAllAppointments(){
->>>>>>> b891913bff5b8357fde5881432c2db4185da34a3
 		ArrayList<Appointment> all = new ArrayList<Appointment>(appointmentList);
 		System.out.println();
 		System.out.println("All Appointments");

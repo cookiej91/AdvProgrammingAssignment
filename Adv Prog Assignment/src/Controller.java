@@ -10,10 +10,6 @@ import java.util.GregorianCalendar;
  */
 public class Controller {
 
-<<<<<<< HEAD
-	//global variables
-=======
->>>>>>> b891913bff5b8357fde5881432c2db4185da34a3
 	public static AppointmentBook appBook = new AppointmentBook();
 	public static ArrayList<Appointment> getAllAppointments(){
 		return appBook.getAllAppointments();

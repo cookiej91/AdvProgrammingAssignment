@@ -105,11 +105,10 @@ public class BasicForm{
 		panel.add(addButton);
 		addButton.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
-<<<<<<< HEAD
+
 				//once input -1 off month according to gregorianCalendar
-=======
+
 				//needs to know what is being added
->>>>>>> b891913bff5b8357fde5881432c2db4185da34a3
 				int year = Integer.parseInt(yearTextField.getText());
 				int month = Integer.parseInt(monthTextField.getText()) - 1;
 				int day = Integer.parseInt(dayTextField.getText());
@@ -163,7 +162,6 @@ public class BasicForm{
 		}
 	}
 
-<<<<<<< HEAD
 	/**
 	 * error conflict checking
 	 * creating clones to remove times from dates to just compare dates
@@ -171,8 +169,6 @@ public class BasicForm{
 	 * to check for dateTime conflicts
 	 * @param newAppointment
 	 */
-=======
->>>>>>> b891913bff5b8357fde5881432c2db4185da34a3
 	public static void errorCheckAppointment(Appointment newAppointment){
 
 		GregorianCalendar newAppointmentClone = (GregorianCalendar)newAppointment.getStartDateTime().clone();
@@ -186,12 +182,9 @@ public class BasicForm{
 		newAppointmentClone.clear(Calendar.SECOND);
 		newAppointmentClone.clear(Calendar.MINUTE);
 		newAppointmentClone.clear(Calendar.HOUR_OF_DAY);
-<<<<<<< HEAD
 		
 		//checking for dates that are the same as the newappointment
-=======
 
->>>>>>> b891913bff5b8357fde5881432c2db4185da34a3
 		for(Appointment appointment : appointments){
 			oldAppointClone = (GregorianCalendar) appointment.getStartDateTime().clone();
 			oldAppointClone.clear(Calendar.MILLISECOND);
@@ -203,7 +196,6 @@ public class BasicForm{
 				dateAppointment.add(appointment);
 			}
 		}
-<<<<<<< HEAD
 		
 		//checking against times
 /*		for(Appointment appointment : dateAppointment){
@@ -215,13 +207,9 @@ public class BasicForm{
 				System.out.println("Error Conflict");
 			}
 		}*/
-=======
-
 		for(Appointment appointment : dateAppointment){
 			
 		}
->>>>>>> b891913bff5b8357fde5881432c2db4185da34a3
-
 
 //		if newStart == start {Error};
 //		if newEnd == end{Error};
@@ -230,8 +218,6 @@ public class BasicForm{
 //		if newStart < start && newend > start {Error}
 //		if newStart > start && newEnd > End && newStart < end {Error};
 	}
-<<<<<<< HEAD
 }
-=======
-}
->>>>>>> b891913bff5b8357fde5881432c2db4185da34a3
+
+
