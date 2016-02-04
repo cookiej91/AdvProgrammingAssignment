@@ -19,10 +19,11 @@ import javax.swing.*;
 public class BasicForm{
 	private static DefaultListModel<String> listModel = new DefaultListModel<String>();
 	private static JList<String> dataList = new JList<String>(listModel);
+	private static DefaultListModel<String> newListModel = new DefaultListModel<String>();
 
 	protected static void createAndShowGUI(){
 		JFrame frame = new JFrame("Appointment Book");
-		frame.setSize(600,500);
+		frame.setSize(550,450);
 		frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 
 		//MenuBar (Top Toolbar)
@@ -133,9 +134,10 @@ public class BasicForm{
 
 		//cycle list (prev / next)
 		/**
-		 * 
+		 *
 		 */
 		final JList<String> singleList = new JList(listModel);
+
 		singleList.setBounds(10,300,500,25);
 		panel.add(singleList);
 
@@ -144,7 +146,10 @@ public class BasicForm{
 		panel.add(prevAppointment);
 		prevAppointment.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
-
+				listModel.removeAllElements();
+				int i = 0;
+				listModel.getElementAt(i);
+				i--;
 			}
 		});
 
@@ -153,19 +158,16 @@ public class BasicForm{
 		panel.add(nextAppointment);
 		nextAppointment.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
-
-				for(int i = 0; i < Controller.appBook.getAllAppointments().size(); i++){
-
+					int i = 0;
+					listModel.getElementAt(i);
+					i++;
 				}
-			}
-		});
-		
+			});
 
+		//Add Remove and Show Buttons / actions
 		for (int i = 0; i < dataList.getModel().getSize(); i++){
 			System.out.println(dataList.getModel().getElementAt(i));
 		}
-
-		//Add Remove and Show Buttons / actions
 		JButton addButton = new JButton("Add Appointment");
 		addButton.setBounds(10, 80, 160, 25);
 		panel.add(addButton);
@@ -212,6 +214,31 @@ public class BasicForm{
 		showAllButton.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e){
 				updateJList();
+			}
+		});
+
+		//searchbymonth
+		JButton searchMonth = new JButton("Monthly Search");
+		searchMonth.setBounds(10, 110, 160, 25);
+		panel.add(searchMonth);
+		searchMonth.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
+				listModel.removeAllElements();
+				for(Appointment appointment : Controller.appBook.getAllAppointments()){
+					if(monthTextField.equals(appointment.toString())){
+						listModel.addElement(appointment.toString());
+					}
+				}
+			}
+		});
+
+		//searchbyday
+		JButton searchDay = new JButton("Daily Search");
+		searchDay.setBounds(180, 110, 160, 25);
+		panel.add(searchDay);
+		searchDay.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
+
 			}
 		});
 
@@ -268,7 +295,7 @@ public class BasicForm{
 		newAppointmentClone.clear(Calendar.SECOND);
 		newAppointmentClone.clear(Calendar.MINUTE);
 		newAppointmentClone.clear(Calendar.HOUR_OF_DAY);
-		
+
 		//checking for dates that are the same as the newappointment
 
 		for(Appointment appointment : appointments){
@@ -284,25 +311,30 @@ public class BasicForm{
 		}
 		
 		//checking against times
-/*		for(Appointment appointment : dateAppointment){
-			if(newAppointment.getStartDateTime() == appointment.getStartDateTime()){
-				System.out.println("Error Conflict");
-			} else if (newAppointment.getEndDateTime() == appointment.getEndDateTime()){
-				System.out.println("Error Conflict");
-			} else if (newAppointment.getStartDateTime() > appointment.getStartDateTime() && newAppointment.getStartDateTime() < appointment.getEndDateTime()){
-				System.out.println("Error Conflict");
-			}
-		}*/
 		for(Appointment appointment : dateAppointment){
-			
+			//	if newStart == start {Error};
+			if(newAppointment.getStartDateTime().equals(appointment.getStartDateTime())) {
+				System.out.println("Error date == date");
+			} //	if newEnd == end{Error};
+			else if (newAppointment.getEndDateTime().equals(appointment.getEndDateTime())){
+				System.out.println("Error date == date");
+			} //	if newStart > start && < end {Error};
+			else if (newAppointment.getStartDateTime().after(appointment.getStartDateTime()) && newAppointment.getStartDateTime().before(appointment.getEndDateTime())){
+				//error
+				System.out.println("Error time starts after event but starts before1st end of event on same day");
+			} //	if newStart < start && newend > start {Error}
+			else if (newAppointment.getStartDateTime().before(appointment.getStartDateTime()) && newAppointment.getEndDateTime().after(appointment.getStartDateTime())){
+				//error
+				System.out.println("Error event starts before current event but ends after said event");
+			} // if newStart > start && newEnd > End && newStart < end {Error};
+			else if (newAppointment.getStartDateTime().after(appointment.getStartDateTime()) && newAppointment.getEndDateTime().after(appointment.getEndDateTime()) && newAppointment.getStartDateTime().before(appointment.getEndDateTime())){
+				//error
+				System.out.println("Error event starts & ends after 1st event but starts before the end of 1st event");
+			} // if newStart < start && newEnd > end
+			else if (newAppointment.getStartDateTime().before(appointment.getStartDateTime()) && newAppointment.getEndDateTime().after(appointment.getEndDateTime())){
+				System.out.println("Error this event starts before a current event and finishes after the same event");
+			}
 		}
-
-//		if newStart == start {Error};
-//		if newEnd == end{Error};
-//
-//		if newStart > start && < end {Error};
-//		if newStart < start && newend > start {Error}
-//		if newStart > start && newEnd > End && newStart < end {Error};
 	}
 }
 
