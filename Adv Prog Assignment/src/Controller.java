@@ -51,4 +51,4 @@ public class Controller {
 		appointments.remove(index);
 	}
 
-	}
+}

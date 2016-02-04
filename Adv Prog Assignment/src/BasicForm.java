@@ -189,6 +189,28 @@ public class BasicForm{
 				Export.exportToCSV();
 			}
 		});
+
+		//search text field
+		JTextField searchText = new JTextField();
+		searchText.setBounds(350, 110, 70, 25);
+		panel.add(searchText);
+		//search button
+		JButton searchButton = new JButton("Search");
+		searchButton.setBounds(430, 110, 80, 25);
+		panel.add(searchButton);
+		//once performed should go through all appointments and check the text in the search box
+		//against the eventTitles and update the jlist accordingly
+		searchButton.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
+				listModel.removeAllElements();
+				for(Appointment appointment : Controller.appBook.getAllAppointments()){
+					if(searchText.getText().equals(appointment.getEventTitle())){
+						listModel.addElement(appointment.toString());
+					}
+				}
+			}
+		});
+
 	}
 
 	/**
