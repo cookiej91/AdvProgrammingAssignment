@@ -45,6 +45,11 @@ public class BasicForm{
 			}
 		}
 		file.add(exportFile);
+		exportFile.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
+				Export.exportToCSV();
+			}
+		});
 		//exit button add/action
 		file.add(exit);
 		class exitAction implements ActionListener{
@@ -132,38 +137,6 @@ public class BasicForm{
 		pane.setBounds(10,150,500,100);
 		panel.add(pane);
 
-		//cycle list (prev / next)
-		/**
-		 *
-		 */
-		final JList<String> singleList = new JList(listModel);
-
-		singleList.setBounds(10,300,500,25);
-		panel.add(singleList);
-
-		JButton prevAppointment = new JButton("Prev");
-		prevAppointment.setBounds(10, 330, 60, 25);
-		panel.add(prevAppointment);
-		prevAppointment.addActionListener(new ActionListener() {
-			public void actionPerformed(ActionEvent e) {
-				listModel.removeAllElements();
-				int i = 0;
-				listModel.getElementAt(i);
-				i--;
-			}
-		});
-
-		JButton nextAppointment = new JButton("Next");
-		nextAppointment.setBounds(450, 330, 60, 25);
-		panel.add(nextAppointment);
-		nextAppointment.addActionListener(new ActionListener() {
-			public void actionPerformed(ActionEvent e) {
-					int i = 0;
-					listModel.getElementAt(i);
-					i++;
-				}
-			});
-
 		//Add Remove and Show Buttons / actions
 		for (int i = 0; i < dataList.getModel().getSize(); i++){
 			System.out.println(dataList.getModel().getElementAt(i));
@@ -225,7 +198,7 @@ public class BasicForm{
 			public void actionPerformed(ActionEvent e) {
 				listModel.removeAllElements();
 				for(Appointment appointment : Controller.appBook.getAllAppointments()){
-					if(monthTextField.equals(appointment.toString())){
+					if(monthTextField.equals(appointment.getStartDateTime())){
 						listModel.addElement(appointment.toString());
 					}
 				}
@@ -291,19 +264,19 @@ public class BasicForm{
 
 		ArrayList<Appointment> dateAppointment = new ArrayList<Appointment>();
 
-		newAppointmentClone.clear(Calendar.MILLISECOND);
-		newAppointmentClone.clear(Calendar.SECOND);
-		newAppointmentClone.clear(Calendar.MINUTE);
-		newAppointmentClone.clear(Calendar.HOUR_OF_DAY);
+		newAppointmentClone.set(Calendar.MILLISECOND, 0);
+		newAppointmentClone.set(Calendar.SECOND, 0);
+		newAppointmentClone.set(Calendar.MINUTE, 0);
+		newAppointmentClone.set(Calendar.HOUR_OF_DAY, 0);
 
 		//checking for dates that are the same as the newappointment
 
 		for(Appointment appointment : appointments){
 			oldAppointClone = (GregorianCalendar) appointment.getStartDateTime().clone();
-			oldAppointClone.clear(Calendar.MILLISECOND);
-			oldAppointClone.clear(Calendar.SECOND);
-			oldAppointClone.clear(Calendar.MINUTE);
-			oldAppointClone.clear(Calendar.HOUR_OF_DAY);
+			oldAppointClone.set(Calendar.MILLISECOND, 0);
+			oldAppointClone.set(Calendar.SECOND, 0);
+			oldAppointClone.set(Calendar.MINUTE, 0);
+			oldAppointClone.set(Calendar.HOUR_OF_DAY, 0);
 
 			if(newAppointmentClone.equals(oldAppointClone)){
 				dateAppointment.add(appointment);
@@ -314,24 +287,30 @@ public class BasicForm{
 		for(Appointment appointment : dateAppointment){
 			//	if newStart == start {Error};
 			if(newAppointment.getStartDateTime().equals(appointment.getStartDateTime())) {
+				JOptionPane.showMessageDialog(null, "This appointment conflicts with another appointment, select and remove if this is incorrect");
 				System.out.println("Error date == date");
 			} //	if newEnd == end{Error};
 			else if (newAppointment.getEndDateTime().equals(appointment.getEndDateTime())){
+				JOptionPane.showMessageDialog(null, "This appointment conflicts with another appointment, select and remove if this is incorrect");
 				System.out.println("Error date == date");
 			} //	if newStart > start && < end {Error};
 			else if (newAppointment.getStartDateTime().after(appointment.getStartDateTime()) && newAppointment.getStartDateTime().before(appointment.getEndDateTime())){
 				//error
+				JOptionPane.showMessageDialog(null, "This appointment conflicts with another appointment, select and remove if this is incorrect");
 				System.out.println("Error time starts after event but starts before1st end of event on same day");
 			} //	if newStart < start && newend > start {Error}
 			else if (newAppointment.getStartDateTime().before(appointment.getStartDateTime()) && newAppointment.getEndDateTime().after(appointment.getStartDateTime())){
 				//error
+				JOptionPane.showMessageDialog(null, "This appointment conflicts with another appointment, select and remove if this is incorrect");
 				System.out.println("Error event starts before current event but ends after said event");
 			} // if newStart > start && newEnd > End && newStart < end {Error};
 			else if (newAppointment.getStartDateTime().after(appointment.getStartDateTime()) && newAppointment.getEndDateTime().after(appointment.getEndDateTime()) && newAppointment.getStartDateTime().before(appointment.getEndDateTime())){
 				//error
+				JOptionPane.showMessageDialog(null, "This appointment conflicts with another appointment, select and remove if this is incorrect");
 				System.out.println("Error event starts & ends after 1st event but starts before the end of 1st event");
 			} // if newStart < start && newEnd > end
 			else if (newAppointment.getStartDateTime().before(appointment.getStartDateTime()) && newAppointment.getEndDateTime().after(appointment.getEndDateTime())){
+				JOptionPane.showMessageDialog(null, "This appointment conflicts with another appointment, select and remove if this is incorrect");
 				System.out.println("Error this event starts before a current event and finishes after the same event");
 			}
 		}
