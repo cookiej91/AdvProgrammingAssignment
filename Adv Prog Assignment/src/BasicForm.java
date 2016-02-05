@@ -33,23 +33,17 @@ public class BasicForm{
 		JMenu file = new JMenu("File");
 		menuBar.add(file);
 		//Menu Items for File
-		JMenuItem importFile = new JMenuItem("Import");
 		JMenuItem exportFile = new JMenuItem("Export");
 		JMenuItem exit = new JMenuItem("Exit");
 
 		//adding file menuItems and actionListeners
-		file.add(importFile);
-		class importAction implements ActionListener{
-			public void actionPerformed(ActionEvent e){
-
-			}
-		}
 		file.add(exportFile);
 		exportFile.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
 				Export.exportToCSV();
 			}
 		});
+
 		//exit button add/action
 		file.add(exit);
 		class exitAction implements ActionListener{
@@ -58,12 +52,6 @@ public class BasicForm{
 			}
 		}
 		exit.addActionListener(new exitAction());
-
-		JMenu help = new JMenu("Help");
-		menuBar.add(help);
-		//Menu Items for help
-		JMenuItem about = new JMenuItem("About");
-		help.add(about);
 
 		JPanel panel = new JPanel();
 		frame.add(panel);
@@ -77,26 +65,26 @@ public class BasicForm{
  */
 	public static void placeComponents(JPanel panel) {
 
-		panel.setLayout(null);		
-		
+		panel.setLayout(null);
+
 		//date label and text field
 		JLabel dateLabel = new JLabel("Date");
 		dateLabel.setBounds(10, 10, 80, 25);
 		panel.add(dateLabel);
-		
+
 		DateFormat dayFormat = new SimpleDateFormat("dd");
 		final JFormattedTextField dayTextField = new JFormattedTextField(dayFormat);
-		dayTextField.setBounds(50,10,25,25);
+		dayTextField.setBounds(50, 10, 25, 25);
 		panel.add(dayTextField);
 
 		DateFormat monthFormat = new SimpleDateFormat("MM");
 		final JFormattedTextField monthTextField = new JFormattedTextField(monthFormat);
-		monthTextField.setBounds(110,10,25,25);
+		monthTextField.setBounds(110, 10, 25, 25);
 		panel.add(monthTextField);
 
 		DateFormat yearFormat = new SimpleDateFormat("yyyy");
 		final JFormattedTextField yearTextField = new JFormattedTextField(yearFormat);
-		yearTextField.setBounds(170,10,50,25);
+		yearTextField.setBounds(170, 10, 50, 25);
 		panel.add(yearTextField);
 
 		JLabel startTime = new JLabel("Start Time");
@@ -131,14 +119,14 @@ public class BasicForm{
 		final JTextField titleText = new JTextField(20);
 		titleText.setBounds(50, 40, 170, 25);
 		panel.add(titleText);
-		
+
 		final JList<String> dataList = new JList(listModel);
 		JScrollPane pane = new JScrollPane(dataList);
-		pane.setBounds(10,150,500,100);
+		pane.setBounds(10, 150, 500, 100);
 		panel.add(pane);
 
 		//Add Remove and Show Buttons / actions
-		for (int i = 0; i < dataList.getModel().getSize(); i++){
+		for (int i = 0; i < dataList.getModel().getSize(); i++) {
 			System.out.println(dataList.getModel().getElementAt(i));
 		}
 		JButton addButton = new JButton("Add Appointment");
@@ -185,7 +173,7 @@ public class BasicForm{
 		showAllButton.setBounds(350, 80, 160, 25);
 		panel.add(showAllButton);
 		showAllButton.addActionListener(new ActionListener() {
-			public void actionPerformed(ActionEvent e){
+			public void actionPerformed(ActionEvent e) {
 				updateJList();
 			}
 		});
@@ -197,8 +185,8 @@ public class BasicForm{
 		searchMonth.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
 				listModel.removeAllElements();
-				for(Appointment appointment : Controller.appBook.getAllAppointments()){
-					if(monthTextField.equals(appointment.getStartDateTime())){
+				for (Appointment appointment : Controller.appBook.getAllAppointments()) {
+					if (monthTextField.equals(appointment.getStartDateTime())) {
 						listModel.addElement(appointment.toString());
 					}
 				}
@@ -211,7 +199,12 @@ public class BasicForm{
 		panel.add(searchDay);
 		searchDay.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
-
+				listModel.removeAllElements();
+				for(Appointment appointment : Controller.appBook.getAllAppointments()){
+					if(appointment.getStartDateTime().equals(appointment.getStartDateTime())){
+						listModel.addElement(appointment.toString());
+					}
+				}
 			}
 		});
 
@@ -316,5 +309,6 @@ public class BasicForm{
 		}
 	}
 }
+
 
 
