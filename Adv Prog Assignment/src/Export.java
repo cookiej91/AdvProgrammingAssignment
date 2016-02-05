@@ -13,11 +13,11 @@ public class Export {
 	public static void exportToCSV(){
 	try {
 		File file = new File(System.getProperty("user.dir") + "/test.csv");
-		
+
 		if(!file.exists()){
 			file.createNewFile();
-		} 
-		
+		}
+
 		FileWriter fw = new FileWriter(file.getAbsoluteFile());
 		BufferedWriter bw = new BufferedWriter(fw);
 
@@ -35,25 +35,6 @@ public class Export {
 	} catch (IOException e){
 		e.printStackTrace();
 	}
-	} 
-
-	//ICS
-	public static void exportToICS(){
-		try {
-			File file = new File("C:\\Test.ics");
-			
-			if(!file.exists()){
-				file.createNewFile();
-			}
-			
-			FileWriter fw = new FileWriter(file.getAbsoluteFile());
-			BufferedWriter bw = new BufferedWriter(fw);
-			
-			bw.write(AppointmentBook.appointmentList.toString());
-			bw.close();
-		} catch (IOException e){
-			e.printStackTrace();
-		}
 	}
 
 
